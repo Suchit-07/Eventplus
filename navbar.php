@@ -3,10 +3,14 @@
     <title> EventPlus </title>
     <link href="bootstrap-5.1.3-dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <script src="bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
+    <link href="bootstrap-5.1.3-dist/css/bootstrap-datepicker.css" rel="stylesheet"/>
+    <script src="bootstrap-5.1.3-dist/js/jquery.min.js"></script>
+    <script src="bootstrap-5.1.3-dist/js/bootstrap-datepicker.js"></script>
+
 </head>
 <body style="overflow-x: hidden">
     <nav style="background-color:#384f45;"class="navbar navbar-expand-md navbar-light sticky-top">
-        <span class="navbar-brand h1 text-light">EventPlus</span>
+        <span class="navbar-brand h1 text-light m-2">EventPlus</span>
 
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">

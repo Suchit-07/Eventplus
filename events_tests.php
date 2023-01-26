@@ -136,23 +136,13 @@ if($power == 0){
             }else{
                 $button = '<a href="events.php?action=register&id='.$i['id'].'&getdate= '.$_GET['getdate'].'" class="btn btn-primary">Register</a>';
             }
-            if($i['type'] == 1){
-                $sport3 = 'Sport Event';
-            }else{
-                $sport3 = 'Non Sport Event';
-            }
-            $date_exploded = explode('-', explode(' ', $i['date'])[0]);
-            $time_exploded = explode(':', explode(' ', $i['date'])[1]);
-            $date_shown = $date_exploded[1] . '/' . $date_exploded[2] . '/' . $date_exploded[0] . ' At ' . $time_exploded[0] . ':' .  $time_exploded[1];
-
             echo('
             <div class="col-md-4 card m-3 border border-dark " style="width: 40rem;">
             <div class="card-body">
             <h4 class="card-title">' .$i["name"] . " - " .$i["points"] ." points" .'</h4>
-            <p style="font-size:15px;">'.$sport3.'</p>
             <hr>
             <p class="card-text">'.$i["description"].'</p>
-            <p class="card-text">'.$date_shown.'</p>
+            <p class="card-text">'.$i["date"].'</p>
             '.$button.'
             </div>
             </div>');
@@ -171,26 +161,16 @@ elseif($power == 1){
 <div class="p-3" style="display:grid">
 <div class="row">
     <?php
-    if($i['type'] == 1){
-        $sport3 = 'Sport Event';
-    }else{
-        $sport3 = 'Non Sport Event';
-    }
     foreach($response as $i){
-        $date_exploded = explode('-', explode(' ', $i['date'])[0]);
-        $time_exploded = explode(':', explode(' ', $i['date'])[1]);
-        $date_shown = $date_exploded[1] . '/' . $date_exploded[2] . '/' . $date_exploded[0] . ' At ' . $time_exploded[0] . ':' .  $time_exploded[1];
-
             echo('
             <div class="col-md-3">
             <div class="card m-3 border border-dark" style="width: 18rem;">
             <div class="card-body">
             <h4 class="card-title">' .$i["name"] .'</h4>
-            <p style="font-size:15px;">'.$sport3.'</p>
             <hr>
             <h6 class="card-title">' .$i["points"] .' Point(s)</h6>
             <p class="card-text">'.$i["description"].'</p>
-            <p class="card-text">'.$date_shown.'</p>
+            <p class="card-text">'.$i["date"].'</p>
             <hr>
             <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#exampleModalCenter'.$i["id"].'"> Edit  </button>
             <a href="event_info.php?id='.$i['id'].'" class="btn btn-primary border border-dark"> Attendants </a>
@@ -198,13 +178,7 @@ elseif($power == 1){
                     </div>
                 </div>
             ');
-            if($i['type'] == 1){
-                $sport_2 = 'selected';
-                $non_sport_2 = '';
-            }elseif($i['type'] == 0){
-                $sport_2 = '';
-                $non_sport_2 = 'selected';
-            }
+
             echo('
             <form method="get" action="events.php">
             <input name="action" type="hidden" value="update"> 
@@ -213,36 +187,25 @@ elseif($power == 1){
             <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h3> Edit Event </h3>
+                <input name="name" type="text" class="modal-title" id="exampleModalLongTitle" value="'.$i["name"].'">
                 <button type="button" onClick="window.location.reload();" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
                 <div class="modal-body">
+                <input name="points" class="col-md-1"type="text" value="'.$i['points'].'"> <h6>Point(s)</h6>
+                <input name="description" class="mb-2 col-md-8" type="text" value="'.$i["description"].'">
+                <input name="date" class="col-md-8"type="datetime-local" value="'.$i["date"].'">
 
-                <div class="form-outline mb-4">
-                <label class="form-label" for="form3Example3">Name</label>
-                <input name="name" type="text" id="form3Example3" class="form-control form-control-md" placeholder="Enter event name" value="'.$i["name"].'" required>
-
-                <label class="form-label mt-4" for="form3Example3">Description</label>
-                <input name="description" type="text" id="form3Example3" class="form-control form-control-md" placeholder="Enter event description" value="'.$i["description"].'" required>
-
-
-                <label class="form-label mt-4" for="form3Example3">Points</label>
-                <input name="points" type="number" id="form3Example3" class="md-4 form-control form-control-md" placeholder="Enter event point value" value="'.$i["points"].'" required>
-
-                <label class="form-label mt-4" for="date">Date and Time</label>
-                <input type="datetime-local" class="md-4 form-control form-control-md" id="date" name="date" value="'.$i["date"].'" required>
-
-                </div>
                 <select id="type" class="col-md-3 form-control-sm text-center" name="type">
-                    <option name="sport" value="1" '.$sport_2.'>Sport</option>
-                    <option value="0" name="non-sport" '.$non_sport_2.'>Non-Sport</option>
+                    <option name="sport" value="1">Sport</option>
+                    <option value="0" name="non-sport">Non-Sport</option>
                 </select>
                 </div>
                 <div class="modal-footer">
                 <button type="button" onClick="window.location.reload();" class="btn btn-secondary border border-dark" data-bs-dismiss="modal">Close</button>
                 <a href="events.php?action=delete&id='.$i['id'].'" class="btn btn-danger border border-dark">Delete</a>
+
                 <button name="submit" type="submit" class="btn btn-primary border border-dark">Save changes</button>
                 </div>
             </div>
@@ -260,36 +223,22 @@ elseif($power == 1){
             <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h3> Add Event </h3>
+                <input placeholder="Enter Name"class="form-control" id="name" name="name" type="text" required>
                 <button type="button" onClick="window.location.reload();" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
-
-
                 <div class="modal-body">
-                <div class="form-outline mb-4">
-                <label class="form-label" for="form3Example3">Name</label>
-                <input name="name" type="text" id="form3Example3" class="form-control form-control-md" placeholder="Enter event name" required>
+                <input name="points" class="col-md-1"type="text" required> <h6>Point(s)</h6>
+                <input placeholder="Enter Description"name="description" class="mb-2 col-md-8" type="text" required>
+                <input name="date" class="col-md-8"type="datetime-local" required>
 
-                <label class="form-label mt-4" for="form3Example3">Description</label>
-                <input name="description" type="text" id="form3Example3" class="form-control form-control-md" placeholder="Enter event description" required>
-
-
-                <label class="form-label mt-4" for="form3Example3">Points</label>
-                <input name="points" type="number" id="form3Example3" class="md-4 form-control form-control-md" placeholder="Enter event point value" required>
-
-                <label class="form-label mt-4" for="date">Date and Time</label>
-                <input type="datetime-local" class="md-4 form-control form-control-md" id="date" name="date" value="YYYY-MM-DDT12:00" required>
-
-                </div>
                 <select id="type" class="col-md-3 form-control-sm text-center" name="type">
-                    <option name="sport" value="1">Sport</option>
                     <option value="0" name="non-sport">Non-Sport</option>
+                    <option name="sport" value="1">Sport</option>
+
                 </select>
                 </div>
-
-
                 <div class="modal-footer">
                 <button type="button" onClick="window.location.reload();" class="btn btn-secondary border border-dark" data-bs-dismiss="modal">Close</button>
                 <button name="submit" type="submit" class="btn btn-primary border border-dark">Add Event</button>
