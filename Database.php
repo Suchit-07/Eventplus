@@ -320,5 +320,29 @@ class Database{
         return $query->fetchAll();
 
     }
+
+    public function get_prize_select($email){
+        $query = $this->db->prepare('SELECT * from user where email = :email');
+        $query->execute([
+            ':email' => $email,
+        ]);
+        return $query->fetchAll();
+    }
+
+    public function pick_prize($id, $email){
+        $user = $this->get_prize_select($email);
+
+        $query = $this->db->prepare('SELECT * from prizes where id = :id');
+        $query->execute([
+            ':id' => $id,
+        ]);
+
+        $prize = $query->fetchAll();
+
+        if(!$user || !$prize){
+            return false;
+        }
+
+    }
     
 }

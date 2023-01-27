@@ -8,9 +8,9 @@
     <script src="bootstrap-5.1.3-dist/js/bootstrap-datepicker.js"></script>
 
 </head>
-<body style="overflow-x: hidden">
+<body class="bg-light" style="overflow-x: hidden;">
     <nav style="background-color:#384f45;"class="navbar navbar-expand-md navbar-light sticky-top">
-        <span class="navbar-brand h1 text-light m-2">EventPlus</span>
+        <a href="<?=$_ENV["BASE_URL"]?>" class="navbar-brand h1 text-light m-2">EventPlus</a>
 
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">

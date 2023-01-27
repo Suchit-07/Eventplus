@@ -1,42 +1,64 @@
 <?php
-// ini_set('display_errors', '1');
-// ini_set('display_startup_errors', '1');
-// error_reporting(E_ALL);
 
+// init.php has everything to initialize the application
 require 'init.php';
 require 'Database.php';
 
+// navbar.php is the navigation bar at the top of the screen
 include_once "navbar.php";
 
+// this checks if the user is already logged in
 if(isset($_SESSION['user'])){
+  // if they are already logged it it'll redirect them to the main page
     header("Location: " . $_ENV['BASE_URL']);
 }
 
+// this checks if the user pressed the submit button
 if(isset($_POST['submit'])){
+
+    // this checks if any of the mandatory inputs are empty
     if(!$_POST['email'] ?? false){
+
+      // displays an error to the user if any input is empty
         $error = 'Please Enter a Valid Email';
     } elseif(!$_POST['password'] ?? false){
         $error = 'Please Enter Your Password';
     } else{
+
+      // creates a new Database class which contains all the methods to communicate with the database
         $database = new Database;
+
+      // authenticates the user with the given email and password
         $authentication = $database->authenticate($_POST['email'], $_POST['password']);
 
         if(!$authentication){
+          // displays an error to the user if the email/password was incorrect
             $error = 'Email and Password are Incorrect';
         } else{
+          // checks if the user is a student
             if($authentication['power'] == 0 ?? 0){
+
+              // checks if the this is the first time a student logged in
               if($authentication['first_login'] == 1 ?? null){
+
+                // if it is, it propmts the user to change their temporary password
                 header("Location: " . $_ENV['BASE_URL'] . "change_password.php?success=Please%20Change%20Temporary%20Password&email=" . $_POST['email']);
               }else{
+                // if it's not, it finishes logging the user in
                 if(!$_SESSION['user']){
                     $_SESSION['user'] = $authentication;
                 }
+
+                // redirects user to the main page
                 header("Location: " . $_ENV['BASE_URL'] . "?success=Successfully%20Logged%20In");
               }
+
             }else{
+              // finished logging in for admin users
                 if(!$_SESSION['user']){
                     $_SESSION['user'] = $authentication;
                 }
+                // redirects admin users to main page
                 header("Location: " . $_ENV['BASE_URL'] . "?success=Successfully%20Logged%20In");
               }
 
@@ -47,6 +69,7 @@ if(isset($_POST['submit'])){
 ?>
 
 <?php
+// displays error or success notifications to users
 if(!$error){$error = $_GET['error'] ?? null;}
 if(!$success){$success = $_GET['success'] ?? null;}
 if ($error) {
@@ -56,6 +79,7 @@ if ($error) {
 }
 ?>
 
+<!-- HTML code for the log in form -->
 <div class="container-fluid h-75">
 <div class="row d-flex justify-content-center align-items-center h-100">
 

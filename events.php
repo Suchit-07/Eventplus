@@ -171,12 +171,13 @@ elseif($power == 1){
 <div class="p-3" style="display:grid">
 <div class="row">
     <?php
-    if($i['type'] == 1){
-        $sport3 = 'Sport Event';
-    }else{
-        $sport3 = 'Non Sport Event';
-    }
     foreach($response as $i){
+        if($i['type'] == 1){
+            $sport3 = 'Sport Event';
+        }else{
+            $sport3 = 'Non Sport Event';
+        }
+
         $date_exploded = explode('-', explode(' ', $i['date'])[0]);
         $time_exploded = explode(':', explode(' ', $i['date'])[1]);
         $date_shown = $date_exploded[1] . '/' . $date_exploded[2] . '/' . $date_exploded[0] . ' At ' . $time_exploded[0] . ':' .  $time_exploded[1];
