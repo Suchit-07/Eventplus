@@ -20,10 +20,12 @@ if(isset($_POST['submit'])){
         $error = 'Please Enter First Name';
     } elseif(!$_POST['email']){
         $error = 'Please Enter First Name';
-    } else{
+    } elseif(!$_POST['grade']){
+      $error = 'Please Enter Grade';
+  }else{
         $database = new Database;
         if(!$database->check_user_exists($_POST['email'])){
-            $password = $database->create_user($_POST['email'],$_POST['first'], $_POST['last']);
+            $password = $database->create_user($_POST['email'],$_POST['first'], $_POST['last'], $_POST['grade']);
 
             $success = "This Account's Temporary Password is: $password";
         } else{
@@ -69,7 +71,15 @@ if ($error) {
           placeholder="Enter email address" required>
         
       </div>
-
+      <div class="form-outline mb-4">
+      <label class="form-label" for="grade">Grade</label>
+        <select class="form-control form-control-lg" id="grade" name="grade">
+          <option value="9"> 9th </option>
+          <option value="10"> 10th </option>
+          <option value="11"> 11th </option>
+          <option value="12"> 12th </option>
+        </select>
+      </div>
 
       <div class="justify-content-center text-center text-lg-start mt-4 pt-2">
         <button name="submit" type="submit" class="form-control form-control-lg btn btn-primary btn-lg border border-dark">Submit</button>

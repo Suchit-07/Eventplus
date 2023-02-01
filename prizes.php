@@ -44,7 +44,7 @@ if($user[0]['prize_select'] == 0){
 ?>
 </div>
 <form>
-<table class="table mt-5 table-hover text-center justify-content-center">
+<table class="table mt-5 table-hover justify-content-center">
     <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>

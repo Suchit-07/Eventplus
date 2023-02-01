@@ -16,7 +16,7 @@ if ($error) {
 }
 
 if($_SESSION['user']['power'] == 0){
-    header("Location: " . $_ENV['BASE_URL'] . "prizes.php?error=" . $error . "&success=" . $success);
+    header("Location: " . $_ENV['BASE_URL'] . "events.php?error=" . $error . "&success=" . $success);
 } elseif($_SESSION['user']['power'] == 1){
     header("Location: " . $_ENV['BASE_URL'] . "events.php?error=" . $error . "&success=" . $success);
  

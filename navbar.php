@@ -24,14 +24,12 @@
                 if($_SESSION['user'] ?? null){
                     echo('<a class="nav-item nav-link text-white" href="' . $_ENV["BASE_URL"]. 'leaderboard.php">Leaderboard</a>');
                     echo('<a class="nav-item nav-link text-white" href="' . $_ENV["BASE_URL"]. 'events.php">Events</a>');
-
                     echo('<a class="nav-item nav-link text-white" href="' . $_ENV["BASE_URL"]. 'change_password.php">Change Password</a>');
+                    echo('<a class="nav-item nav-link text-white" href="' . $_ENV["BASE_URL"]. 'prizes.php">Prizes</a>');
                     echo('<a class="nav-item nav-link text-white" href="' . $_ENV["BASE_URL"]. 'logout.php">Log Out</a>');
 
                 }
-                ?>
-                <!-- <a class="nav-item nav-link text-white" href="<?=$_ENV['BASE_URL']?>FAQ.php">FAQ</a> -->
-                
+                ?>                
             </div>
         </div>
     </nav>

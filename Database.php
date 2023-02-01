@@ -74,16 +74,17 @@ class Database{
         }
     }
 
-    public function create_user($email, $first_name, $last_name){
+    public function create_user($email, $first_name, $last_name, $grade){
         $password = $this->randomPassword();
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
-        $user_create_query = $this->db->prepare('INSERT into user (email, first_name, last_name, password_hash, power, first_login, points) VALUES (:email, :first_name, :last_name, :password, 0, 1, 0)');
+        $user_create_query = $this->db->prepare('INSERT into user (email, first_name, last_name, password_hash, power, first_login, points, grade) VALUES (:email, :first_name, :last_name, :password, 0, 1, 0, :grade)');
 
         $user_create_query->execute([
             ':email' => $email,
             ':first_name' => $first_name,
             ':last_name' => $last_name,
             ':password' => $password_hash,
+            ':grade' => $grade,
         ]);
 
         return $password;

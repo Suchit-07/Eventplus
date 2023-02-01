@@ -10,6 +10,7 @@ include_once "navbar.php";
 if(!$_SESSION['user'] ?? null){
     header("Location: " . $_ENV['BASE_URL'] . "login.php");
 }
+
 $database = new Database;
 $power = $_SESSION['user']['power'] ?? null;
 if($power == 1){
@@ -129,34 +130,41 @@ if($power == 0){
     <?php
     foreach($response as $i){
         if($viewAll == True || $date == explode(' ', $i['date'])[0]){
-            if($database->is_confirmed($_SESSION['user']['id'], $i['id'])){
-                $button = '<p><u>Confirmed</u></p>';
-            }elseif($database->is_registered($_SESSION['user']['id'], $i['id'])){
-                $button = '<a href="events.php?action=unregister&id='.$i['id'].'&getdate= '.$_GET['getdate'].'" class="btn btn-secondary">Unregister</a>';
-            }else{
-                $button = '<a href="events.php?action=register&id='.$i['id'].'&getdate= '.$_GET['getdate'].'" class="btn btn-primary">Register</a>';
-            }
-            if($i['type'] == 1){
-                $sport3 = 'Sport Event';
-            }else{
-                $sport3 = 'Non Sport Event';
-            }
-            $date_exploded = explode('-', explode(' ', $i['date'])[0]);
-            $time_exploded = explode(':', explode(' ', $i['date'])[1]);
-            $date_shown = $date_exploded[1] . '/' . $date_exploded[2] . '/' . $date_exploded[0] . ' At ' . $time_exploded[0] . ':' .  $time_exploded[1];
+            if($viewAll == True && date($i['date']) < date("Y-m-d")){
 
-            echo('
-            <div class="col-md-4 card m-3 border border-dark " style="width: 40rem;">
-            <div class="card-body">
-            <h4 class="card-title">' .$i["name"] . " - " .$i["points"] ." points" .'</h4>
-            <p style="font-size:15px;">'.$sport3.'</p>
-            <hr>
-            <p class="card-text">'.$i["description"].'</p>
-            <p class="card-text">'.$date_shown.'</p>
-            '.$button.'
-            </div>
-            </div>');
+            }
+            else{
+                if(date($i['date']) < date("Y-m-d")){
+                    $button = '<p><b><u>Event is Over</u></b></p>';
+                }elseif($database->is_confirmed($_SESSION['user']['id'], $i['id'])){
+                    $button = '<p><u>Confirmed</u></p>';
+                }elseif($database->is_registered($_SESSION['user']['id'], $i['id'])){
+                    $button = '<a href="events.php?action=unregister&id='.$i['id'].'&getdate= '.$_GET['getdate'].'" class="btn btn-secondary">Unregister</a>';
+                }else{
+                    $button = '<a href="events.php?action=register&id='.$i['id'].'&getdate= '.$_GET['getdate'].'" class="btn btn-primary">Register</a>';
+                }
+                if($i['type'] == 1){
+                    $sport3 = 'Sport Event';
+                }else{
+                    $sport3 = 'Non Sport Event';
+                }
+                $date_exploded = explode('-', explode(' ', $i['date'])[0]);
+                $time_exploded = explode(':', explode(' ', $i['date'])[1]);
+                $date_shown = $date_exploded[1] . '/' . $date_exploded[2] . '/' . $date_exploded[0] . ' At ' . $time_exploded[0] . ':' .  $time_exploded[1];
+
+                echo('
+                <div class="col-md-4 card m-3 border border-dark " style="width: 40rem;">
+                <div class="card-body">
+                <h4 class="card-title">' .$i["name"] .'</h4>
+                <p style="font-size:15px;">'.$sport3.  " - " .$i["points"] ." points" .'</p>
+                <hr>
+                <p class="card-text">'.$i["description"].'</p>
+                <p class="card-text">'.$date_shown.'</p>
+                '.$button.'
+                </div>
+                </div>');
         }
+    }
         
     }
 } 
