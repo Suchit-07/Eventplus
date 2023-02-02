@@ -341,9 +341,54 @@ class Database{
         $prize = $query->fetchAll();
 
         if(!$user || !$prize){
-            return false;
+            return 'Something Went Wrong';
         }
 
+        $points = $user['points'] - $prize['points'];
+        if($points < 0){
+            return 'Not enough points for that prize';
+        }
+        $user_update_query = $this->db->prepare('UPDATE user set points = :points, prize_select= 0 where email = :email');
+
+        $user_update_query->execute([
+            ':points' => $points,
+            ':email' => $email,
+        ]);
+
+        $prize_select_query = $this->db->prepare('INSERT into prize_select (user_id, prize_id) VALUES (:user, :prize)');
+        $prize_select_query->execute([
+            ':user' => $user['id'],
+            ':prize' => $prize['id']
+        ]);
+        return false;
+
+    }
+
+    public function pick_random_winner(){
+        $user_query = $this->db->prepare('SELECT * from user where power = 0 and points > 0 and prize_select = 0');
+        $user_query->execute();
+        $response = $user_query->fetchAll();
+        $random_user = $response[array_rand($response)];
+
+        $user_update_query = $this->db->prepare('UPDATE user set prize_select = 1 where id = :id');
+        $user_update_query->execute([
+            ':id' => $random_user['id'],
+        ]);
+        return $random_user;
+    }
+
+    public function pick_highest_winner(){
+        $user_query = $this->db->prepare('SELECT * from user where power = 0 and points > 0 and prize_select = 0');
+        $user_query->execute();
+        $response = $user_query->fetchAll();
+        usort($response, fn($a, $b) =>  $b['points'] <=> $a['points']);
+        $random_user = $response['0'];
+
+        $user_update_query = $this->db->prepare('UPDATE user set prize_select = 1 where id = :id');
+        $user_update_query->execute([
+            ':id' => $random_user['id'],
+        ]);
+        return $random_user;
     }
     
 }
