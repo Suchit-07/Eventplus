@@ -13,7 +13,7 @@ if(!$_SESSION['user'] ?? null){
     header("Location: " . $_ENV['BASE_URL'] . "login.php");
 }
 if($_SESSION['user']['power'] == 1){
-    header("Location: " . $_ENV['BASE_URL'] . "index.php");
+    header("Location: " . $_ENV['BASE_URL'] . "admin_prize.php");
 }
 
 $database = new Database;

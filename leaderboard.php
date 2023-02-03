@@ -70,6 +70,9 @@ if($_SESSION['user']['power'] == 1){
       <th scope="col">Email</th>
       <th scope="col">Grade</th>
       <th scope="col">Points</th>
+      <?php if($_SESSION['user']['power'] == 1){
+        echo('<th scope="col">Selected for Prize</th>');
+      }?>
     </tr>
   </thead>
   <tbody>
@@ -83,6 +86,13 @@ if($_SESSION['user']['power'] == 1){
     <?php
     if($_SESSION['user']['power'] == 1){
         for ($x = 0; $x < count($response); $x++) {
+          if($response[$x]['prize_select'] == 1){
+            $prize_select = 'Yes';
+            $color = 'success';
+          } else{
+            $prize_select = 'No';
+            $color = 'danger';
+          }
           if(!$_GET['grade'] || $response[$x]['grade'] == $_GET['grade'] || $_GET['grade'] == '-1'){
             echo('<tr>
             <th scope="row">'.($x+1).'</th>
@@ -91,6 +101,8 @@ if($_SESSION['user']['power'] == 1){
             <td>'.$response[$x]["email"].'</td> 
             <td>'.$response[$x]["grade"].'th</td> 
             <td>'.$response[$x]["points"].'</td>
+            <td class="text-'.$color.'">'.$prize_select.'</td>
+
         </tr>');
           }
         }

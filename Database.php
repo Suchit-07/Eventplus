@@ -368,7 +368,12 @@ class Database{
         $user_query = $this->db->prepare('SELECT * from user where power = 0 and points > 0 and prize_select = 0');
         $user_query->execute();
         $response = $user_query->fetchAll();
-        $random_user = $response[array_rand($response)];
+
+        if($response){
+            $random_user = $response[array_rand($response)];
+        } else{
+            return false;
+        }
 
         $user_update_query = $this->db->prepare('UPDATE user set prize_select = 1 where id = :id');
         $user_update_query->execute([
@@ -381,9 +386,12 @@ class Database{
         $user_query = $this->db->prepare('SELECT * from user where power = 0 and points > 0 and prize_select = 0');
         $user_query->execute();
         $response = $user_query->fetchAll();
+
+        if(!$response){
+            return false;
+        }
         usort($response, fn($a, $b) =>  $b['points'] <=> $a['points']);
         $random_user = $response['0'];
-
         $user_update_query = $this->db->prepare('UPDATE user set prize_select = 1 where id = :id');
         $user_update_query->execute([
             ':id' => $random_user['id'],
@@ -391,4 +399,22 @@ class Database{
         return $random_user;
     }
     
+    public function delete_prize($id){
+        $query = $this->db->prepare('DELETE from prizes where id = :id');
+        $query->execute([
+            ':id' => $id,
+        ]);
+        return true;
+    }
+
+    public function add_prize($name, $points){
+        $query = $this->db->prepare('INSERT into prizes (points, prize) values (:points, :name)');
+        $query->execute([
+            ':points' => $points,
+            ':name' => $name,        
+        ]);
+
+        return true;
+
+    }
 }

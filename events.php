@@ -23,8 +23,8 @@ if($power == 1){
             $error = "Please Enter a Point Value";
         } elseif(!$_GET['description'] ?? null){
             $error = "Please Enter a Description";
-        } elseif(strlen($_GET['description']) > 254){
-            $error = "Description Cannot Be More Than 255 Characters";
+        } elseif(strlen($_GET['description']) > 120){
+            $error = "Description Cannot Be More Than 120 Characters";
         }elseif(!$_GET['date'] ?? null){
             $error = "Please Enter a Date";
         } elseif($_GET['type'] == null){
@@ -53,7 +53,9 @@ if($power == 1){
             $error = "Please Enter a Valid Date and Time For The Event";
         } elseif($_GET['type'] == null){
             $error = "Please Enter a Valid category For The Event";
-        } else{
+        } elseif(strlen($_GET['description']) > 120){
+            $error = "Description Cannot Be More Than 120 Characters";
+        }else{
             $database->add_event($_GET['name'],$_GET['points'],$_GET['description'],$_GET['date'],$_GET['type']);
             header("Location: " . $_ENV['BASE_URL'] . "events.php");
         }
@@ -89,7 +91,7 @@ if($power == 1){
 }
 
 $response = $database->get_all_events();
-
+usort($response, fn($a, $b) => date($a['date']) <=> date($b['order']));
 if(!$response){
     $error="No Events Added";
 }
@@ -124,7 +126,7 @@ if($power == 0){
     <div class="row">
     <div class="col div-margin justify-content-center text-center">
 	    <div class="datepicker justify-content-center text-center"></div>
-        <button onclick="refresh_list()" class="m-3 col-md-10 btn btn-primary">View All</button>
+        <button onclick="refresh_list()" class="m-3 col-md-10 btn btn-primary border border-dark">View All</button>
     </div>
     <div class="col">
     <?php
@@ -139,9 +141,9 @@ if($power == 0){
                 }elseif($database->is_confirmed($_SESSION['user']['id'], $i['id'])){
                     $button = '<p><u>Confirmed</u></p>';
                 }elseif($database->is_registered($_SESSION['user']['id'], $i['id'])){
-                    $button = '<a href="events.php?action=unregister&id='.$i['id'].'&getdate= '.$_GET['getdate'].'" class="btn btn-secondary">Unregister</a>';
+                    $button = '<a href="events.php?action=unregister&id='.$i['id'].'&getdate= '.$_GET['getdate'].'" class="btn btn-secondary border-2 border-dark">Unregister</a>';
                 }else{
-                    $button = '<a href="events.php?action=register&id='.$i['id'].'&getdate= '.$_GET['getdate'].'" class="btn btn-primary">Register</a>';
+                    $button = '<a href="events.php?action=register&id='.$i['id'].'&getdate= '.$_GET['getdate'].'" class="btn btn-primary border-2 border-dark">Register</a>';
                 }
                 if($i['type'] == 1){
                     $sport3 = 'Sport Event';
@@ -192,7 +194,7 @@ elseif($power == 1){
 
             echo('
             <div class="col-md-3">
-            <div class="card m-3 border border-dark" style="width: 18rem;">
+            <div class="card m-3 border border-dark" style="width: 18rem;height:23rem;">
             <div class="card-body">
             <h4 class="card-title">' .$i["name"] .'</h4>
             <p style="font-size:15px;">'.$sport3.'</p>
@@ -201,9 +203,10 @@ elseif($power == 1){
             <p class="card-text">'.$i["description"].'</p>
             <p class="card-text">'.$date_shown.'</p>
             <hr>
-            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#exampleModalCenter'.$i["id"].'"> Edit  </button>
-            <a href="event_info.php?id='.$i['id'].'" class="btn btn-primary border border-dark"> Attendants </a>
-
+            <div class="d-flex align-items-end">
+            <button type="button" class="btn btn-link align-self-end" data-bs-toggle="modal" data-bs-target="#exampleModalCenter'.$i["id"].'"> Edit  </button>
+            <a href="event_info.php?id='.$i['id'].'" class="btn btn-primary border border-dark align-self-end"> Attendants </a>
+            </div>
                     </div>
                 </div>
             ');
@@ -270,7 +273,7 @@ elseif($power == 1){
             <div class="modal-content">
                 <div class="modal-header">
                 <h3> Add Event </h3>
-                <button type="button" onClick="window.location.reload();" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" onClick="window.location.reload();" class="close btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
