@@ -41,7 +41,7 @@ if(isset($_POST['submit'])){
               // checks if the this is the first time a student logged in
               if($authentication['first_login'] == 1 ?? null){
 
-                // if it is, it propmts the user to change their temporary password
+                // if it is, it prompts the user to change their temporary password
                 header("Location: " . $_ENV['BASE_URL'] . "change_password.php?success=Please%20Change%20Temporary%20Password&email=" . $_POST['email']);
               }else{
                 // if it's not, it finishes logging the user in
