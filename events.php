@@ -78,7 +78,6 @@ if($power == 1){
     }
 
     if(!$_GET['getdate'] ?? null){
-        $success = "Please Pick a Date";
         $viewAll = True;
         $date = False;
     } elseif($_GET['getdate'] == '-1'){
