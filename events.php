@@ -90,7 +90,7 @@ if($power == 1){
 }
 
 $response = $database->get_all_events();
-usort($response, fn($a, $b) => date($a['date']) <=> date($b['order']));
+usort($response, fn($a, $b) => date($a['date']) <=> date($b['date']));
 if(!$response){
     $error="No Events Added";
 }
@@ -175,8 +175,16 @@ if($power == 0){
 
 //Admin UI
 elseif($power == 1){
+    
     ?>
 </div>
+<?php
+if(!$_GET['past']){
+    echo('<a href="'.$_ENV["BASE_URL"] . "events.php?past=1".'" class="btn btn-secondary m-4 mb-0 mt-0">View Past Events</a>');
+}else{
+    echo('<a href="'.$_ENV["BASE_URL"] . "events.php?past=0".'" class="btn btn-secondary m-4 mb-0 mt-0">View Only Present Events</a>');
+}
+?>
 <div class="p-3" style="display:grid">
 <div class="row">
     <?php
@@ -190,7 +198,15 @@ elseif($power == 1){
         $date_exploded = explode('-', explode(' ', $i['date'])[0]);
         $time_exploded = explode(':', explode(' ', $i['date'])[1]);
         $date_shown = $date_exploded[1] . '/' . $date_exploded[2] . '/' . $date_exploded[0] . ' At ' . $time_exploded[0] . ':' .  $time_exploded[1];
+        if(date($i['date']) > date("Y-m-d")){
+            $button = '<button type="button" class="btn btn-link align-self-end" data-bs-toggle="modal" data-bs-target="#exampleModalCenter'.$i["id"].'"> Edit  </button>
+            <a href="event_info.php?id='.$i['id'].'" class="btn btn-primary border border-dark align-self-end"> Attendants </a>';
+        }else{
+            $button = '<b>Past Event</b>';
+        }
+        if(!$_GET['past'] && date($i['date']) < date("Y-m-d")){
 
+        }else{
             echo('
             <div class="col-md-3">
             <div class="card m-3 border border-dark" style="width: 18rem;height:23rem;">
@@ -203,8 +219,7 @@ elseif($power == 1){
             <p class="card-text">'.$date_shown.'</p>
             <hr>
             <div class="d-flex align-items-end">
-            <button type="button" class="btn btn-link align-self-end" data-bs-toggle="modal" data-bs-target="#exampleModalCenter'.$i["id"].'"> Edit  </button>
-            <a href="event_info.php?id='.$i['id'].'" class="btn btn-primary border border-dark align-self-end"> Attendants </a>
+            '.$button.'
             </div>
                     </div>
                 </div>
@@ -261,6 +276,7 @@ elseif($power == 1){
             </div>
             </form> 
             </div>');
+        }
         
     }
     

@@ -332,7 +332,7 @@ class Database{
 
     public function pick_prize($id, $email){
         $user = $this->get_prize_select($email);
-
+    
         $query = $this->db->prepare('SELECT * from prizes where id = :id');
         $query->execute([
             ':id' => $id,
@@ -344,7 +344,7 @@ class Database{
             return 'Something Went Wrong';
         }
 
-        $points = $user['points'] - $prize['points'];
+        $points = $user[0]['points'] - $prize[0]['points'];
         if($points < 0){
             return 'Not enough points for that prize';
         }
@@ -357,8 +357,8 @@ class Database{
 
         $prize_select_query = $this->db->prepare('INSERT into prize_select (user_id, prize_id) VALUES (:user, :prize)');
         $prize_select_query->execute([
-            ':user' => $user['id'],
-            ':prize' => $prize['id']
+            ':user' => $user[0]['id'],
+            ':prize' => $prize[0]['id']
         ]);
         return false;
 
@@ -416,5 +416,25 @@ class Database{
 
         return true;
 
+    }
+
+    public function get_chosen_prizes($id){
+        $query = $this->db->prepare('SELECT * from prize_select where user_id = :id');
+
+        $query->execute([
+            ':id' => $id
+        ]);
+        $prizes = $query->fetchAll();
+        $chosen = [];
+
+        foreach($prizes as $x){
+            $prize_query = $this->db->prepare('SELECT * from prizes where id = :id');
+            $prize_query->execute([
+                ':id' => $x['prize_id']
+            ]);
+            $chosen[] = $prize_query->fetchAll()[0]['prize'];
+        }
+
+        return $chosen;
     }
 }
