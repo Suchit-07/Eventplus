@@ -300,7 +300,7 @@ class Database{
         $get_query = $this->db->prepare('SELECT * from user where power=0');
         $get_query->execute();
 
-        $response = $get_query->fetchAll();
+        $response = $get_query->fetchAll(PDO::FETCH_ASSOC);
         return $response;
     }
 
@@ -436,5 +436,96 @@ class Database{
         }
 
         return $chosen;
+    }
+
+    public function leaderboard_as_xls(){
+        $leaderboard = $this->get_leaderboard();
+
+        foreach($leaderboard as $x=>$y){
+            unset($leaderboard[$x]['password_hash']);
+            unset($leaderboard[$x]['power']);
+            unset($leaderboard[$x]['first_login']);
+            unset($leaderboard[$x]['prize_select']);
+        }
+        $file_name = "Student_Leaderboard.xls";
+        header("Content-Disposition: attachment; filename=\"$file_name\"");
+        header("Content-Type: application/vnd.ms-excel");
+
+        $column_names = false;
+        foreach($leaderboard as $row) {
+        if(!$column_names) {
+        echo implode("\t", array_keys($row)) . "\n";
+        $column_names = true;
+        }
+        echo implode("\t", array_values($row)) . "\n";
+        }
+        exit;
+    }
+    function xlsToArray() {
+        $filename = 'xls/leaderboard.xls';
+        $data = array();
+        $header = array();
+    
+        if (($handle = fopen($filename, "r")) !== false) {
+            while (($rowData = fgetcsv($handle, 0, "\t")) !== false) {
+                if (empty($header)) {
+                    $header = $rowData;
+                } else {
+                    $numColumns = count($rowData);
+                    $row = array();
+    
+                    for ($i = 0; $i < $numColumns; $i++) {
+                        $row[$header[$i]] = $rowData[$i];
+                    }
+    
+                    $data[] = $row;
+                }
+            }
+    
+            fclose($handle);
+        }
+    
+        return $data;
+    }
+    
+
+    public function array_to_db($array){
+        if(!$array){
+            return false;
+        }
+        foreach($array as $x){
+            $query = $this->db->prepare('UPDATE user SET first_name = :first, last_name = :last, points = :points, grade = :grade WHERE id = :id');
+            //die(var_dump($array));
+            if(!$x['first_name'] ?? null){
+                break;
+            }
+            if(!$x['last_name'] ?? null){
+                break;
+            }
+            if(!$x['points'] ?? null){
+                $points = 0;
+            }else{
+                $points = $x['points'];
+            }
+            if(!$x['grade'] ?? null){
+                $grade = 9;
+            }else{
+                $grade = $x['grade'];
+            }
+
+            if(!$x['id'] ?? null){
+                break;
+            }
+
+            $query->execute([
+                ':first' => $x['first_name'],
+                ':last' => $x['last_name'],
+                ':points' => $points,
+                ':grade' => $grade,
+                ':id' => $x['id'],
+            ]);
+
+        }
+        return true;
     }
 }

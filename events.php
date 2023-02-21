@@ -180,9 +180,9 @@ elseif($power == 1){
 </div>
 <?php
 if(!$_GET['past']){
-    echo('<a href="'.$_ENV["BASE_URL"] . "events.php?past=1".'" class="btn btn-secondary m-4 mb-0 mt-0">View Past Events</a>');
+    echo('<a href="'.$_ENV["BASE_URL"] . "events.php?past=1".'" class="btn btn-secondary m-3 mb-0 mt-0 border-2 border-dark">View Past Events</a>');
 }else{
-    echo('<a href="'.$_ENV["BASE_URL"] . "events.php?past=0".'" class="btn btn-secondary m-4 mb-0 mt-0">View Only Present Events</a>');
+    echo('<a href="'.$_ENV["BASE_URL"] . "events.php?past=0".'" class="btn btn-secondary m-3 mb-0 mt-0 border-2 border-dark">View Only Present Events</a>');
 }
 ?>
 <div class="p-3" style="display:grid">

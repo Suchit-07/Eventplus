@@ -6,7 +6,13 @@ require 'init.php';
 require 'Database.php';
 
 include_once "navbar.php";
-
+if(!$error){$error = $_GET['error'] ?? null;}
+if(!$success){$success = $_GET['success'] ?? null;}
+if ($error) {
+    echo '<div class="alert alert-danger">' . $error . '</div>';
+} elseif($success){
+    echo '<div class="alert alert-success">' . $success . '</div>';
+}
 if(!$_SESSION['user'] ?? null){
     header("Location: " . $_ENV['BASE_URL'] . "login.php");
 }
@@ -61,6 +67,28 @@ if($_SESSION['user']['power'] == 1){
 }
 
 ?>
+<style>
+.custom-file-input {
+  position: absolute;
+  left: -9999px;
+}
+
+.custom-file-label {
+  position: relative;
+  z-index: 1;
+}
+</style>
+
+<form action="upload.php" method="post" enctype="multipart/form-data">
+
+<div class="custom-file">
+<a class="m-3 mr-0 mt-0 mb-0 btn btn-primary border-2 border-dark" href="download_xls.php">Download CSV </a>
+    <input type="file" class="custom-file-input" name="fileToUpload" id="fileToUpload" accept=".xls" onchange="this.form.submit()"required>
+    <label class="custom-file-label m-3 mr-0 mt-0 mb-0 btn btn-secondary border-2 border-dark" for="fileToUpload">Upload CSV</label>
+</div>
+</form>
+
+
 <table class="table mt-5 table-hover">
   <thead class="thead-dark">
     <tr>
