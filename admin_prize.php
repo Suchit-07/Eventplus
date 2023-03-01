@@ -42,15 +42,19 @@ if($_GET['action'] == 'delete' ?? null){
         }
     }
 } elseif($_GET['action'] == 'random' ?? null){
-    $response = $database->pick_random_winner();
-    $winner = $response['first_name'] .' '. $response['last_name'];
+    $response1 = $database->pick_random_winner();
+    $winner = $response1['first_name'] .' '. $response1['last_name'];
 
-    $response = $database->pick_highest_winner();
-    if(!$response){
+    $response2 = $database->pick_highest_winner();
+    if(!$response1 && !$response2){
         $error = 'All students are currently selected for a prize';
         header("Location: " . $_ENV['BASE_URL'] . "admin_prize.php?error=" . $error);
-    } else{
-        $success = 'Winners are: ' . $response['first_name'] .' '. $response['last_name']. ', ' . $winner;
+    } else if(!$response2 && $response1){
+        $success = 'Winner is: ' . $winner;
+        header("Location: " . $_ENV['BASE_URL'] . "admin_prize.php?success=" . $success);
+    }
+    else{
+        $success = 'Winners are: ' . $response2['first_name'] .' '. $response2['last_name']. ', ' . $winner;
         header("Location: " . $_ENV['BASE_URL'] . "admin_prize.php?success=" . $success);
     }
 }
