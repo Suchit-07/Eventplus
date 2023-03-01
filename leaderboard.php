@@ -64,6 +64,15 @@ if($_SESSION['user']['power'] == 1){
   <option value="12"'.$twelve.'> 12th Grade </option>
   </select>
   </form>');
+
+  echo('<form action="upload.php" method="post" enctype="multipart/form-data">
+
+  <div class="custom-file">
+  <a class="m-3 mr-0 mt-0 mb-0 btn btn-primary border-2 border-dark" href="download_xls.php">Download XLS </a>
+      <input type="file" class="custom-file-input" name="fileToUpload" id="fileToUpload" accept=".xls" onchange="this.form.submit()"required>
+      <label class="custom-file-label m-3 mr-0 mt-0 mb-0 btn btn-secondary border-2 border-dark" for="fileToUpload">Upload XLS</label>
+  </div>
+  </form>');
 }
 
 ?>
@@ -79,14 +88,6 @@ if($_SESSION['user']['power'] == 1){
 }
 </style>
 
-<form action="upload.php" method="post" enctype="multipart/form-data">
-
-<div class="custom-file">
-<a class="m-3 mr-0 mt-0 mb-0 btn btn-primary border-2 border-dark" href="download_xls.php">Download CSV </a>
-    <input type="file" class="custom-file-input" name="fileToUpload" id="fileToUpload" accept=".xls" onchange="this.form.submit()"required>
-    <label class="custom-file-label m-3 mr-0 mt-0 mb-0 btn btn-secondary border-2 border-dark" for="fileToUpload">Upload CSV</label>
-</div>
-</form>
 
 
 <table class="table mt-5 table-hover">

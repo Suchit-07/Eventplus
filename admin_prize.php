@@ -43,23 +43,15 @@ if($_GET['action'] == 'delete' ?? null){
     }
 } elseif($_GET['action'] == 'random' ?? null){
     $response = $database->pick_random_winner();
-    if(!$response){
-        $error = 'All students are currently selected for a prize';
-        header("Location: " . $_ENV['BASE_URL'] . "admin_prize.php?error=" . $error);
-    } else{
-        $success = 'Random User Selected: ' . $response['first_name'] .' '. $response['last_name'];
-        header("Location: " . $_ENV['BASE_URL'] . "admin_prize.php?success=" . $success);
+    $winner = $response['first_name'] .' '. $response['last_name'];
 
-    }
-} elseif($_GET['action'] == 'highest' ?? null){
     $response = $database->pick_highest_winner();
     if(!$response){
         $error = 'All students are currently selected for a prize';
         header("Location: " . $_ENV['BASE_URL'] . "admin_prize.php?error=" . $error);
     } else{
-        $success = 'Random User Selected: ' . $response['first_name'] .' '. $response['last_name'];
+        $success = 'Winners are: ' . $response['first_name'] .' '. $response['last_name']. ', ' . $winner;
         header("Location: " . $_ENV['BASE_URL'] . "admin_prize.php?success=" . $success);
-
     }
 }
 
@@ -73,8 +65,7 @@ if ($error) {
 ?>
 <div class="col">
 <button type="button" class="m-1 btn btn-primary border-2 border-dark"data-bs-toggle="modal" data-bs-target="#addModal">Add Prize </button>
-<a class="m-1 btn btn-primary border-2 border-dark" href="<?=$_ENV['BASE_URL']?>admin_prize.php?action=random">Pick Random Winner </a>
-<a class="m-1 btn btn-primary border-2 border-dark " href="<?=$_ENV['BASE_URL']?>admin_prize.php?action=highest">Pick Highest Winner </a>
+<a class="m-1 btn btn-success border-2 border-dark" href="<?=$_ENV['BASE_URL']?>admin_prize.php?action=random">Pick Winners </a>
 
 </div>
 <form>

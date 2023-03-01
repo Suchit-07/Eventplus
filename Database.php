@@ -493,39 +493,82 @@ class Database{
         if(!$array){
             return false;
         }
+        $id_query = $this->db->prepare('SELECT id from user');
+        $id_query->execute();
+        $ids = $id_query->fetchAll(PDO::FETCH_COLUMN);
+        //die(var_dump($array));
         foreach($array as $x){
-            $query = $this->db->prepare('UPDATE user SET first_name = :first, last_name = :last, points = :points, grade = :grade WHERE id = :id');
-            //die(var_dump($array));
-            if(!$x['first_name'] ?? null){
-                break;
-            }
-            if(!$x['last_name'] ?? null){
-                break;
-            }
-            if(!$x['points'] ?? null){
-                $points = 0;
-            }else{
-                $points = $x['points'];
-            }
-            if(!$x['grade'] ?? null){
-                $grade = 9;
-            }else{
-                $grade = $x['grade'];
-            }
+            if(in_array($x['id'], $ids)){
+                $query = $this->db->prepare('UPDATE user SET first_name = :first, last_name = :last, points = :points, grade = :grade, email=:email WHERE id = :id');
+                //die(var_dump($array));
+                if(!$x['first_name'] ?? null){
+                    break;
+                }
+                if(!$x['last_name'] ?? null){
+                    break;
+                }
+                if(!$x['email'] ?? null){
+                    break;
+                }
+                if(!$x['points'] ?? null){
+                    $points = 0;
+                }else{
+                    $points = $x['points'];
+                }
+                if(!$x['grade'] ?? null){
+                    $grade = 9;
+                }else{
+                    $grade = $x['grade'];
+                }
 
-            if(!$x['id'] ?? null){
-                break;
+                if(!$x['id'] ?? null){
+                    break;
+                }
+
+                $query->execute([
+                    ':first' => $x['first_name'],
+                    ':last' => $x['last_name'],
+                    ':points' => $points,
+                    ':grade' => $grade,
+                    ':email' => $x['email'],
+                    ':id' => $x['id'],
+                ]);
+
+            } else{
+                if(!$x['first_name'] ?? null){
+                    break;
+                }
+                if(!$x['last_name'] ?? null){
+                    break;
+                }
+                if(!$x['email'] ?? null){
+                    break;
+                }
+                if(!$x['grade'] ?? null){
+                    $grade = 9;
+                }else{
+                    $grade = $x['grade'];
+                }
+                if(!$x['points'] ?? null){
+                    $points = 0;
+                }else{
+                    $points = $x['points'];
+                }
+                $password_hash = password_hash('password', PASSWORD_DEFAULT);
+                $user_create_query = $this->db->prepare('INSERT into user (id,email, first_name, last_name, password_hash, power, first_login, points, grade) VALUES (:id, :email, :first_name, :last_name, :password, 0, 1, :points, :grade)');
+
+                $user_create_query->execute([
+                    ':id' => $x['id'],
+                    ':email' => $x['email'],
+                    ':first_name' => $x['first_name'],
+                    ':last_name' => $x['last_name'],
+                    ':password' => $password_hash,
+                    ':grade' => $grade,
+                    ':points' => $points,
+                ]);
+
             }
-
-            $query->execute([
-                ':first' => $x['first_name'],
-                ':last' => $x['last_name'],
-                ':points' => $points,
-                ':grade' => $grade,
-                ':id' => $x['id'],
-            ]);
-
-        }
+    }
         return true;
     }
 }
