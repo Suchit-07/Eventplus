@@ -13,6 +13,7 @@ if ($error) {
 } elseif($success){
     echo '<div class="alert alert-success">' . $success . '</div>';
 }
+
 if(!$_SESSION['user'] ?? null){
     header("Location: " . $_ENV['BASE_URL'] . "login.php");
 }
@@ -74,7 +75,11 @@ if($_SESSION['user']['power'] == 1){
   </div>
   </form>');
 }
-
+?>
+<div class="mt-5 mb-5 jumbotron text-center">
+<h1 class="display-3">Leaderboard</h1>
+</div>
+<?php
 ?>
 <style>
 .custom-file-input {

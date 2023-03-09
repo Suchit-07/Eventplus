@@ -26,11 +26,24 @@ Download the app from the github repo
 
   Run Composer install to install necessary packages
 ```
+## Customization
 
+EventPlus can be very easily customized to fit school themes or colors. 
+
+Change the CSS variables
+```bash
+--primary-bg-color
+--secondary-bg-color
+--navbar-color
+--logo-color
+--primary-text-color
+--secondary-text-color
+```
+on the `styles.css` page to customize the app to fit your need.
 
 ## Acknowledgements
 
- - [Boostrap](https://getbootstrap.com/)
+ - [Bootstrap](https://getbootstrap.com/)
  - [Composer](https://getcomposer.org/)
  - [Github](https://github.com/)
 

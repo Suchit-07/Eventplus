@@ -32,7 +32,12 @@ if ($error) {
 } elseif($success){
     echo '<div class="alert alert-success">' . $success . '</div>';
 }
+?>
+<div class="mt-3 jumbotron text-center">
+<h1 class="display-3">Prizes</h1>
+</div>
 
+<?php
 if($_GET['submit'] ?? null){
     if($_GET['check']){
         $response = $database->pick_prize($_GET['check'], $_SESSION['user']['email']);
@@ -44,10 +49,12 @@ if($_GET['submit'] ?? null){
         }
     }
 }
+
+
 ?>
 <div class="text-start">
-<p class="m-3">Current Point(s): <?= $user[0]['points'] ?><p>
-<p class="m-3">Chosen Prize(s): <?php foreach($chosen_prizes as $element => $x){
+<p class="m-5 mb-5 mt-3"style="margin-top:0;display:inline;float:left">Current Point(s): <?= $user[0]['points'] ?><p>
+<p class="m-5 mb-5 mt-3"style="margin-top:0;display:inline;float:right">Chosen Prize(s): <?php foreach($chosen_prizes as $element => $x){
     if($element == array_key_last($chosen_prizes)){
         echo($x);
     }else{
@@ -55,9 +62,21 @@ if($_GET['submit'] ?? null){
     }
 }?> <p>
 </div>
+<br>
+<br>
+
+<div class="m-3 mt-5 justify-content-start text-start">
+<?php
+if($user[0]['prize_select'] == 0){
+    echo('<h5 class="m-3"> Currently not chosen for a prize </h5>');
+} elseif ($user[0]['prize_select'] == 1){
+    echo('<h5 class="m-3"> Congrats you have won a prize! Select your prize below </h5>');
+}
+?>
+</div>
 <form>
-<table class="table mt-5 table-hover justify-content-center">
-    <thead class="thead-dark">
+<table class="table mt-5 table-hover">
+    <thead class="table-dark">
         <tr>
             <th scope="col">#</th>
             <th scope="col">Prize</th>
@@ -95,17 +114,12 @@ if($_GET['submit'] ?? null){
 
     </tbody>
 </table>
+<div class="text-center">
 <?php
-
-if($user[0]['prize_select'] == 0){
-    echo('<h5 class="m-3"> Currently not chosen for a prize </h5>');
-} elseif ($user[0]['prize_select'] == 1){
-    echo('<h5 class="m-3"> Congrats you have won a prize! Select your prize above </h5>');
-}
-
 if($user[0]['prize_select'] == 1){
-    echo('<button name="submit" value="1"type="submit" class="m-2 btn btn-primary border border-dark">Choose</button>');
+    echo('<button name="submit" value="1"type="submit" class="col-md-12 btn btn-primary border border-dark">Choose</button>');
 }
 ?>
+</div>
  </form>
 

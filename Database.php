@@ -400,6 +400,10 @@ class Database{
     }
     
     public function delete_prize($id){
+        $prize_select_query = $this->db->prepare('DELETE from prize_select where prize_id = :id');
+        $prize_select_query->execute([
+            ':id' => $id,
+        ]);
         $query = $this->db->prepare('DELETE from prizes where id = :id');
         $query->execute([
             ':id' => $id,

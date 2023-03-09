@@ -114,7 +114,9 @@ if ($error) {
 
 
 ?>
-
+<div class="jumbotron text-center">
+<h1 class="display-3">Events</h1>
+</div>
 <div class="p-3" style="display:grid">
 <?php
 //Student UI

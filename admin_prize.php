@@ -105,6 +105,11 @@ if ($error) {
             </div>
             </div>
 </form>
+
+<div class="mt-5 mb-5 jumbotron text-center">
+<h1 class="display-3">Prize</h1>
+</div>
+
 <table class="table mt-5 table-hover">
     <thead class="thead-dark">
         <tr>

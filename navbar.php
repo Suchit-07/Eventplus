@@ -17,6 +17,7 @@
                 <?php
                 if(!$_SESSION['user']?? null){
                     echo('<a class="nav-item nav-link text-white" href="'. $_ENV["BASE_URL"]. 'login.php">Log In</a>');
+
                 }
                 if($_SESSION['user']['power'] == 1 ?? null){
                     echo('<a class="nav-item nav-link text-white" href="'. $_ENV["BASE_URL"]. 'create_user.php">Add User</a>');
@@ -26,9 +27,15 @@
                     echo('<a class="nav-item nav-link text-white" href="' . $_ENV["BASE_URL"]. 'events.php">Events</a>');
                     echo('<a class="nav-item nav-link text-white" href="' . $_ENV["BASE_URL"]. 'change_password.php">Change Password</a>');
                     echo('<a class="nav-item nav-link text-white" href="' . $_ENV["BASE_URL"]. 'prizes.php">Prizes</a>');
+
+                }
+                echo('<a class="nav-item nav-link text-white" href="' . $_ENV["BASE_URL"]. 'faq.php">FAQ</a>');
+
+                if($_SESSION['user'] ?? null){
                     echo('<a class="nav-item nav-link text-white" href="' . $_ENV["BASE_URL"]. 'logout.php">Log Out</a>');
 
                 }
+
                 ?>                
             </div>
         </div>
