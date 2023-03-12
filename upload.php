@@ -15,7 +15,7 @@ if($imageFileType == 'xls'){
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         $database = new Database();
         $database->array_to_db($database->xlsToArray());
-        $message ='Successfully Uploaded CSV';
+        $message ='Successfully Uploaded XLS';
         header("Location: " . $_ENV['BASE_URL'] . "leaderboard.php?success=" . $message);
     }else{
         $message ='Something Went Wrong. Please Try Again Later';

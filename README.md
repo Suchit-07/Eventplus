@@ -3,7 +3,7 @@
 
 EventPlus is a state-of-the-art event management application built specifically for schools. With EventPlus, users can easily personalize events, track student involvement, and incentivize participation in school programs.
 
-2 types of users: Student Admin
+2 types of users: Student and Admin
 
 5 main pages: Log in, Event, Event Confirmation, Prizes, Leaderboard
 

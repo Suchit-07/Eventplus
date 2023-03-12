@@ -1,0 +1,29 @@
+:root {
+    --primary-bg-color: #f2f2f2;
+    --secondary-bg-color: #ffffff;
+    --navbar-color: #333333;
+    --logo-color: #ffcc00;
+    --primary-text-color: #333333;
+    --secondary-text-color: #666666;
+  }
+  
+  body {
+    background-color: var(--primary-bg-color);
+  }
+  
+  .header {
+    background-color: var(--navbar-color);
+  }
+  
+  .logo {
+    color: var(--logo-color);
+  }
+  
+  .primary-text {
+    color: var(--primary-text-color);
+  }
+  
+  .secondary-text {
+    color: var(--secondary-text-color);
+  }
+  
